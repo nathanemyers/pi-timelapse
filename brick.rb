@@ -1,7 +1,17 @@
 #!/usr/bin/ruby
 require 'webrick'
 
-server = WEBrick::HTTPServer.new Port: 9999
-server.mount '/', WEBrick::HTTPServlet::FileHandler, '/home/pi/pi-timelapse/public/'
-trap("INT") { server.stop }
-server.start
+include WEBrick 
+
+def start_webrick(config = {})
+	# always listen on port 8080
+	config.update(:Port => 8080)
+	server = HTTPServer.new(config)
+	yield server if block_given?
+	['INT', 'TERM'].each {|signal|
+		trap(signal) {server.shutdown}
+	}
+	server.start
+end
+
+start_webrick(:DocumentRoot => '/home/pi/pi-timelapse')
