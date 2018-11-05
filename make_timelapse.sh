@@ -2,6 +2,7 @@
 
 date=$(date "+%F_%H:%M")
 out_filename="$date-timelapse.mp4"
+out_full_path="/home/pi/pi-timelapse/$out_filename"
 
 rm /tmp/*.jpg
 
@@ -19,8 +20,6 @@ do
 	x=$(($x+1))
 done
 
-ffmpeg -r 10 -i /tmp/img%03d.jpg -r 10 -s 1280x720 /home/pi/pi-timelapse/$out_filename
+ffmpeg -r 10 -i /tmp/img%03d.jpg -r 10 -s 1280x720 $out_full_path
 
-#mkdir /home/pi/pi-timelapse/archive/$date
-#mv /home/pi/pi-timelapse/pictures/* /home/pi/pi-timelapse/archive/$date
-
+mpack -s "Timelapse Results" $out_full_path nathanemyers@gmail.com
