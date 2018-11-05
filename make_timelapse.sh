@@ -1,6 +1,7 @@
 #!/bin/bash
 
 date=$(date "+%F_%H:%M")
+out_filename="$date-timelapse.mp4"
 
 rm /tmp/*.jpg
 
@@ -18,7 +19,7 @@ do
 	x=$(($x+1))
 done
 
-ffmpeg -i /tmp/img%03d.jpg -r 10 -s 1280x720 -vcodec libx264 /home/pi/$date-timelapse.mp4
+ffmpeg -r 10 -i /tmp/img%03d.jpg -r 10 -s 1280x720 /home/pi/pi-timelapse/$out_filename
 
 #mkdir /home/pi/pi-timelapse/archive/$date
 #mv /home/pi/pi-timelapse/pictures/* /home/pi/pi-timelapse/archive/$date
